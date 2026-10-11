@@ -1,2 +1,3 @@
 # IE500618-assignment2
-Group 13: Magnus Grande, Ida Soldal
+Group 13: 
+Rune-André Gamlem, Magnus Grande, Ida Soldal
