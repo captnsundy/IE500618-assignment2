@@ -10,11 +10,11 @@ Word Count: ~1880 including questions (~1650 answers only)
 
 **Answer:**
 
-Class 0 means no diabetes, and class 1 means prediabetes **or** diabetes. The two are merged, so the model cannot tell prediabetes and diabetes apart. We checked that the target only contains 0 and 1, since the guide mentions an older three-level coding (0/1/2) that does not apply to this file.
+Class 0 means no diabetes, and class 1 means prediabetes **or** diabetes. The two are merged, so the model cannot tell prediabetes and diabetes apart. We also checked that the target only contains 0 and 1, since the guide mentions an older three-level coding (0/1/2) that indeed does not apply to this file.
 
 The target is not balanced: `218,334` respondents (86.1%) are class 0 and `35,346` (13.9%) are class 1.
 
-This matters because a "model" that always predicts class 0 is already right 86.1% of the time without learning anything. Accuracy will therefore look high almost regardless of the model, so we compare against this baseline and focus on precision and recall for class 1, the class we actually want to find. It is also why the split is stratified (Q4).
+This matters because a "model" that always predicts class 0 is already right 86.1% of the time without learning anything. Accuracy will therefore look high almost regardless of the model, so we compare against this baseline and focus on precision and recall for class 1. It is also why the split is stratified (Q4).
 
 The imbalance affects the model as well, not only the evaluation. Logistic Regression's predicted probabilities average out to the share of class 1 in TRAIN (13.9%), so most respondents get a low probability and few reach the 0.5 needed to be predicted as class 1: only 4.0% of TEST is predicted as class 1, against 13.9% who actually are. This is a large part of why recall is low (Q5) and why lowering the threshold helps (Q6).
 
@@ -42,7 +42,7 @@ We compared proportions of class 1 rather than counts, since class 1 is about si
 
 We also found that `GenHlth`, `PhysHlth` and `DiffWalk` overlap a lot. `Fruits`, `Smoker`, `Sex`, `AnyHealthcare`, `NoDocbcCost` and `MentHlth` showed little relationship with the target on their own.
 
-What we can conclude: these features are associated with class 1 in this survey. What we cannot conclude: that any of them cause diabetes. Finding 5 shows why: heavy drinking is not protective, and a cholesterol check does not cause diabetes. More likely, a check means contact with health care (where diabetes gets diagnosed), and people diagnosed with diabetes may have been told to drink less. The survey is a single snapshot, so it cannot show what came first.
+Conclusion: these features are associated with class 1 in this survey. Can't conclude: that any of them cause diabetes. Finding 5 shows why: heavy drinking is not protective, and a cholesterol check does not cause diabetes. More likely, a check means contact with health care (where diabetes gets diagnosed), and people diagnosed with diabetes may have been told to drink less. The survey is a single snapshot, so it cannot show what came first.
 
 ***Q4. TRAIN and TEST: Why must TEST remain separate while preprocessing and the model are fitted?***
 
@@ -50,7 +50,7 @@ What we can conclude: these features are associated with class 1 in this survey.
 
 We used an 80/20 split with `stratify=y` (`random_state=69`), giving 202,944 TRAIN and 50,736 TEST rows, both with 13.93% class 1. TEST was not balanced or resampled.
 
-TEST stands in for respondents the model has never seen. If anything is learned from it, such as the scaler's means and standard deviations, or the choice of threshold, information from TEST leaks into the model and the TEST score becomes too optimistic. We kept all preprocessing inside a `Pipeline` that is fitted on TRAIN only, and checked that the scaler's stored means are exactly the TRAIN means, not the TEST means (Step 5 of the notebook).
+TEST stands in for respondents the model has never seen. If anything is learned from it, such as the scaler's means and standard deviations, or the choice of threshold, information from TEST leaks into the model and the TEST score becomes too optimistic.
 
 ***Q5. Classification errors and metrics: Using your confusion matrix, explain false positives and false negatives for this diabetes problem. What do accuracy, precision and recall tell you? Why is accuracy alone not enough?***
 
@@ -75,10 +75,10 @@ Accuracy alone is not enough because the model's 0.866 is only 0.5 percentage po
 
 **Answer:**
 
-| Threshold | Accuracy | Precision | Recall | F1 | False positives | False negatives |
-|-----------|----------|-----------|--------|----|-----------------|-----------------|
-| 0.50      | 0.866    | 0.565     | 0.161  | 0.250 | 876          | 5,932           |
-| 0.40      | 0.860    | 0.497     | 0.276  | 0.355 | 1,972        | 5,120           |
+| Threshold | Accuracy | Precision | Recall | F1    | False positives | False negatives |
+|-----------|----------|-----------|--------|-------|-----------------|-----------------|
+| 0.50      | 0.866    | 0.565     | 0.161  | 0.250 | 876             | 5,932           |
+| 0.40      | 0.860    | 0.497     | 0.276  | 0.355 | 1,972           | 5,120           |
 
 Lowering the threshold means a lower probability is enough to predict class 1, so more respondents are flagged (2,013 → 3,921). False negatives went down by 812 and false positives went up by 1,096, about 1.35 false alarms per extra case found. Recall rose (0.161 → 0.276) and precision fell (0.565 → 0.497). Accuracy fell slightly and is now just below the always-0 baseline, even though the model finds more cases.
 
@@ -110,6 +110,8 @@ We started with a short discussion of our ambitions for the assignment and what 
 - **Magnus Grande** wrote the initial draft on top of that skeleton: the EDA, the preprocessing pipeline, the model, the evaluation and threshold comparison, and the answers to Q1-Q7.
 - **Rune-André Gamlem** reviewed the technical implementation: whether the pipeline kept TEST separate, whether the numbers in the report matched the notebook, and whether the interpretations held up. This led to clarifications in Q1 and Q5.
 
+Due to time constraints we were unable to cowork like we had intended, so we instead opted to split the work and dedicate more time to learning the material individually. All changes were reviewed by the group before submission.
+
 ***G2. How did your group make sure that everyone understood the complete solution, not only the part they worked on?***
 
 **Answer:**
@@ -117,4 +119,3 @@ We started with a short discussion of our ambitions for the assignment and what 
 Compared to assignment 1, this assignment had a much smaller and more clearly defined scope. The steps were given as instructions to follow, there was no feature engineering, and no rows or features were removed, so there were few places where the solution could go in different directions. Because the skeleton followed the assignment's steps exactly, each member could read the finished notebook step by step against the instructions and see how every requirement was solved.
 
 Before submission, every member read through the final notebook and report, so that each of us understands the complete technical solution and can explain how it differs from assignment 1.
-
