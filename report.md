@@ -2,7 +2,7 @@
 
 IE500618 — Group 13: Rune-André Gamlem, Magnus Grande, Ida Soldal
 
-Word Count: ~1600 including questions (recount after G1/G2 are written)
+Word Count: ~1880 including questions (~1650 answers only)
 
 ## Part A - Answers to Q1-Q7
 
@@ -15,6 +15,8 @@ Class 0 means no diabetes, and class 1 means prediabetes **or** diabetes. The tw
 The target is not balanced: `218,334` respondents (86.1%) are class 0 and `35,346` (13.9%) are class 1.
 
 This matters because a "model" that always predicts class 0 is already right 86.1% of the time without learning anything. Accuracy will therefore look high almost regardless of the model, so we compare against this baseline and focus on precision and recall for class 1, the class we actually want to find. It is also why the split is stratified (Q4).
+
+The imbalance affects the model as well, not only the evaluation. Logistic Regression's predicted probabilities average out to the share of class 1 in TRAIN (13.9%), so most respondents get a low probability and few reach the 0.5 needed to be predicted as class 1: only 4.0% of TEST is predicted as class 1, against 13.9% who actually are. This is a large part of why recall is low (Q5) and why lowering the threshold helps (Q6).
 
 ***Q2. Understanding the features: Choose three features of different types. What do their values mean? Why is looking only at the numbers stored in the CSV not enough to understand a feature?***
 
@@ -67,7 +69,7 @@ Confusion matrix on TEST (threshold 0.50): TN = `42,791`, FP = `876`, FN = `5,93
 
 Accuracy is the share of all respondents classified correctly. Precision is the share of those flagged as class 1 who really are class 1 (56.5%). Recall is the share of actual class 1 respondents that the model found: only 16.1%, so 84% are missed.
 
-Accuracy alone is not enough because the model's 0.866 is only 0.5 percentage points above always predicting "no diabetes", and that baseline finds no one at all. Accuracy hides the low recall completely. TRAIN and TEST are almost identical, so the model is not overfitting. The predicted probabilities of the two classes simply overlap a lot, and the missed class 1 respondents look much less extreme in their answers than the ones that were found.
+Accuracy alone is not enough because the model's 0.866 is only 0.5 percentage points above always predicting "no diabetes", and that baseline finds no one at all. Accuracy hides the low recall completely. TRAIN and TEST are almost identical, so the model is not overfitting. The predicted probabilities of the two classes simply overlap a lot, and the missed class 1 respondents look much less extreme in their answers than the ones that were found. With these features and a linear model, many class 1 respondents cannot be told apart from class 0. A more flexible model might separate some of them better, but we did not test that.
 
 ***Q6. Probability and threshold: Compare thresholds 0.50 and 0.40. What happened to false positives, false negatives, precision and recall? What did not change when you changed only the threshold?***
 
@@ -102,10 +104,17 @@ Limitations:
 
 **Answer:**
 
-TODO
+We started with a short discussion of our ambitions for the assignment and what we had learned from assignment 1, and then split the work into three parts:
+
+- **Ida Soldal** set up the project structure: the repository, the notebook skeleton following the eight steps of the assignment, and the report template with the questions.
+- **Magnus Grande** wrote the initial draft on top of that skeleton: the EDA, the preprocessing pipeline, the model, the evaluation and threshold comparison, and the answers to Q1-Q7.
+- **Rune-André Gamlem** reviewed the technical implementation: whether the pipeline kept TEST separate, whether the numbers in the report matched the notebook, and whether the interpretations held up. This led to clarifications in Q1 and Q5.
 
 ***G2. How did your group make sure that everyone understood the complete solution, not only the part they worked on?***
 
 **Answer:**
 
-TODO
+Compared to assignment 1, this assignment had a much smaller and more clearly defined scope. The steps were given as instructions to follow, there was no feature engineering, and no rows or features were removed, so there were few places where the solution could go in different directions. Because the skeleton followed the assignment's steps exactly, each member could read the finished notebook step by step against the instructions and see how every requirement was solved.
+
+Before submission, every member read through the final notebook and report, so that each of us understands the complete technical solution and can explain how it differs from assignment 1.
+
