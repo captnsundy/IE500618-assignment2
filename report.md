@@ -73,10 +73,10 @@ Accuracy alone is not enough because the model's 0.866 is only 0.5 percentage po
 
 **Answer:**
 
-| Threshold | Accuracy | Precision | Recall | F1 | False positives | False negatives |
-|-----------|----------|-----------|--------|----|-----------------|-----------------|
-| 0.50      | 0.866    | 0.565     | 0.161  | 0.250 | 876          | 5,932           |
-| 0.40      | 0.860    | 0.497     | 0.276  | 0.355 | 1,972        | 5,120           |
+| Threshold | Accuracy | Precision | Recall | F1    | False positives | False negatives |
+|-----------|----------|-----------|--------|-------|-----------------|-----------------|
+| 0.50      | 0.866    | 0.565     | 0.161  | 0.250 | 876             | 5,932           |
+| 0.40      | 0.860    | 0.497     | 0.276  | 0.355 | 1,972           | 5,120           |
 
 Lowering the threshold means a lower probability is enough to predict class 1, so more respondents are flagged (2,013 → 3,921). False negatives went down by 812 and false positives went up by 1,096, about 1.35 false alarms per extra case found. Recall rose (0.161 → 0.276) and precision fell (0.565 → 0.497). Accuracy fell slightly and is now just below the always-0 baseline, even though the model finds more cases.
 
