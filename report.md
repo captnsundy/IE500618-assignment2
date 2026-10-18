@@ -2,7 +2,7 @@
 
 IE500618 — Group 13: Rune-André Gamlem, Magnus Grande, Ida Soldal
 
-Word Count: ~1600 including questions (recount after G1/G2 are written)
+Word Count: ~1880 including questions (~1650 answers only)
 
 ## Part A - Answers to Q1-Q7
 
@@ -104,10 +104,17 @@ Limitations:
 
 **Answer:**
 
-TODO
+We started with a short discussion of our ambitions for the assignment and what we had learned from assignment 1, and then split the work into three parts:
+
+- **Ida Soldal** set up the project structure: the repository, the notebook skeleton following the eight steps of the assignment, and the report template with the questions.
+- **Magnus Grande** wrote the initial draft on top of that skeleton: the EDA, the preprocessing pipeline, the model, the evaluation and threshold comparison, and the answers to Q1-Q7.
+- **Rune-André Gamlem** reviewed the technical implementation: whether the pipeline kept TEST separate, whether the numbers in the report matched the notebook, and whether the interpretations held up. This led to clarifications in Q1 and Q5.
 
 ***G2. How did your group make sure that everyone understood the complete solution, not only the part they worked on?***
 
 **Answer:**
 
-TODO
+Compared to assignment 1, this assignment had a much smaller and more clearly defined scope. The steps were given as instructions to follow, there was no feature engineering, and no rows or features were removed, so there were few places where the solution could go in different directions. Because the skeleton followed the assignment's steps exactly, each member could read the finished notebook step by step against the instructions and see how every requirement was solved.
+
+Before submission, every member read through the final notebook and report, so that each of us understands the complete technical solution and can explain how it differs from assignment 1.
+
