@@ -10,11 +10,11 @@ Word Count: ~1600 including questions (recount after G1/G2 are written)
 
 **Answer:**
 
-Class 0 means no diabetes, and class 1 means prediabetes **or** diabetes. The two are merged, so the model cannot tell prediabetes and diabetes apart. We checked that the target only contains 0 and 1, since the guide mentions an older three-level coding (0/1/2) that does not apply to this file.
+Class 0 means no diabetes, and class 1 means prediabetes **or** diabetes. The two are merged, so the model cannot tell prediabetes and diabetes apart. We also checked that the target only contains 0 and 1, since the guide mentions an older three-level coding (0/1/2) that indeed does not apply to this file.
 
 The target is not balanced: `218,334` respondents (86.1%) are class 0 and `35,346` (13.9%) are class 1.
 
-This matters because a "model" that always predicts class 0 is already right 86.1% of the time without learning anything. Accuracy will therefore look high almost regardless of the model, so we compare against this baseline and focus on precision and recall for class 1, the class we actually want to find. It is also why the split is stratified (Q4).
+This matters because a "model" that always predicts class 0 is already right 86.1% of the time without learning anything. Accuracy will therefore look high almost regardless of the model, so we compare against this baseline and focus on precision and recall for class 1. It is also why the split is stratified (Q4).
 
 ***Q2. Understanding the features: Choose three features of different types. What do their values mean? Why is looking only at the numbers stored in the CSV not enough to understand a feature?***
 
@@ -40,7 +40,7 @@ We compared proportions of class 1 rather than counts, since class 1 is about si
 
 We also found that `GenHlth`, `PhysHlth` and `DiffWalk` overlap a lot. `Fruits`, `Smoker`, `Sex`, `AnyHealthcare`, `NoDocbcCost` and `MentHlth` showed little relationship with the target on their own.
 
-What we can conclude: these features are associated with class 1 in this survey. What we cannot conclude: that any of them cause diabetes. Finding 5 shows why: heavy drinking is not protective, and a cholesterol check does not cause diabetes. More likely, a check means contact with health care (where diabetes gets diagnosed), and people diagnosed with diabetes may have been told to drink less. The survey is a single snapshot, so it cannot show what came first.
+Conclusion: these features are associated with class 1 in this survey. Can't conclude: that any of them cause diabetes. Finding 5 shows why: heavy drinking is not protective, and a cholesterol check does not cause diabetes. More likely, a check means contact with health care (where diabetes gets diagnosed), and people diagnosed with diabetes may have been told to drink less. The survey is a single snapshot, so it cannot show what came first.
 
 ***Q4. TRAIN and TEST: Why must TEST remain separate while preprocessing and the model are fitted?***
 
@@ -48,7 +48,7 @@ What we can conclude: these features are associated with class 1 in this survey.
 
 We used an 80/20 split with `stratify=y` (`random_state=69`), giving 202,944 TRAIN and 50,736 TEST rows, both with 13.93% class 1. TEST was not balanced or resampled.
 
-TEST stands in for respondents the model has never seen. If anything is learned from it, such as the scaler's means and standard deviations, or the choice of threshold, information from TEST leaks into the model and the TEST score becomes too optimistic. We kept all preprocessing inside a `Pipeline` that is fitted on TRAIN only, and checked that the scaler's stored means are exactly the TRAIN means, not the TEST means (Step 5 of the notebook).
+TEST stands in for respondents the model has never seen. If anything is learned from it, such as the scaler's means and standard deviations, or the choice of threshold, information from TEST leaks into the model and the TEST score becomes too optimistic.
 
 ***Q5. Classification errors and metrics: Using your confusion matrix, explain false positives and false negatives for this diabetes problem. What do accuracy, precision and recall tell you? Why is accuracy alone not enough?***
 
