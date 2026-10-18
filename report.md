@@ -16,6 +16,8 @@ The target is not balanced: `218,334` respondents (86.1%) are class 0 and `35,34
 
 This matters because a "model" that always predicts class 0 is already right 86.1% of the time without learning anything. Accuracy will therefore look high almost regardless of the model, so we compare against this baseline and focus on precision and recall for class 1, the class we actually want to find. It is also why the split is stratified (Q4).
 
+The imbalance affects the model as well, not only the evaluation. Logistic Regression's predicted probabilities average out to the share of class 1 in TRAIN (13.9%), so most respondents get a low probability and few reach the 0.5 needed to be predicted as class 1: only 4.0% of TEST is predicted as class 1, against 13.9% who actually are. This is a large part of why recall is low (Q5) and why lowering the threshold helps (Q6).
+
 ***Q2. Understanding the features: Choose three features of different types. What do their values mean? Why is looking only at the numbers stored in the CSV not enough to understand a feature?***
 
 **Answer:**
@@ -67,7 +69,7 @@ Confusion matrix on TEST (threshold 0.50): TN = `42,791`, FP = `876`, FN = `5,93
 
 Accuracy is the share of all respondents classified correctly. Precision is the share of those flagged as class 1 who really are class 1 (56.5%). Recall is the share of actual class 1 respondents that the model found: only 16.1%, so 84% are missed.
 
-Accuracy alone is not enough because the model's 0.866 is only 0.5 percentage points above always predicting "no diabetes", and that baseline finds no one at all. Accuracy hides the low recall completely. TRAIN and TEST are almost identical, so the model is not overfitting. The predicted probabilities of the two classes simply overlap a lot, and the missed class 1 respondents look much less extreme in their answers than the ones that were found.
+Accuracy alone is not enough because the model's 0.866 is only 0.5 percentage points above always predicting "no diabetes", and that baseline finds no one at all. Accuracy hides the low recall completely. TRAIN and TEST are almost identical, so the model is not overfitting. The predicted probabilities of the two classes simply overlap a lot, and the missed class 1 respondents look much less extreme in their answers than the ones that were found. With these features and a linear model, many class 1 respondents cannot be told apart from class 0. A more flexible model might separate some of them better, but we did not test that.
 
 ***Q6. Probability and threshold: Compare thresholds 0.50 and 0.40. What happened to false positives, false negatives, precision and recall? What did not change when you changed only the threshold?***
 
